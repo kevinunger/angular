@@ -231,6 +231,28 @@ See more information on automatic preconnect generation [here](#why-is-a-preconn
 
 Defining a [`srcset` attribute](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/srcset) ensures that the browser requests an image at the right size for your user's viewport, so it doesn't waste time downloading an image that's too large. `NgOptimizedImage` generates an appropriate `srcset` for the image, based on the presence and value of the [`sizes` attribute](https://developer.mozilla.org/docs/Web/API/HTMLImageElement/sizes) on the image tag.
 
+### Automatic decoding attribute
+
+The `NgOptimizedImage` directive automatically sets the `decoding` attribute on images to optimize image decoding performance:
+
+* For priority images (marked with the `priority` attribute), it sets `decoding="sync"` to ensure immediate decoding
+* For non-priority images, it sets `decoding="async"` to allow asynchronous decoding
+
+You can override this behavior by explicitly setting the `decoding` attribute on your image. The directive will respect your custom value.
+
+<docs-code language="angular-html">
+
+<!-- Priority image with synchronous decoding -->
+<img ngSrc="hero.jpg" width="400" height="200" priority>
+
+<!-- Non-priority image with asynchronous decoding -->
+<img ngSrc="thumbnail.jpg" width="100" height="100">
+
+<!-- Custom decoding behavior -->
+<img ngSrc="custom.jpg" width="300" height="200" decoding="sync">
+
+</docs-code>
+
 #### Fixed-size images
 
 If your image should be "fixed" in size  (i.e. the same size across devices, except for [pixel density](https://web.dev/codelab-density-descriptors/)), there is no need to set a `sizes` attribute. A `srcset` can be generated automatically from the image's width and height attributes with no further input required.
