@@ -485,6 +485,16 @@ export class NgOptimizedImage implements OnInit, OnChanges {
     this.setHostAttribute('loading', this.getLoadingBehavior());
     this.setHostAttribute('fetchpriority', this.getFetchPriority());
 
+    // Set decoding attribute: async for lazy, sync for priority, unless user set it
+    const hasUserDecoding = this.imgElement.hasAttribute('decoding');
+    if (!hasUserDecoding) {
+      if (this.priority) {
+        this.setHostAttribute('decoding', 'sync');
+      } else {
+        this.setHostAttribute('decoding', 'async');
+      }
+    }
+
     // The `data-ng-img` attribute flags an image as using the directive, to allow
     // for analysis of the directive's performance.
     this.setHostAttribute('ng-img', 'true');
