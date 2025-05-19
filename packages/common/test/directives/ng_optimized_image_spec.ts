@@ -943,6 +943,53 @@ describe('Image directive', () => {
     );
   });
 
+  describe('decoding attribute', () => {
+    it('should set decoding="sync" for priority images when no user-defined decoding attribute exists', () => {
+      setupTestingModule();
+      const template = '<img ngSrc="path/img.png" width="150" height="50" priority>';
+      const fixture = createTestComponent(template);
+      fixture.detectChanges();
+      const img = fixture.nativeElement.querySelector('img')!;
+      expect(img.getAttribute('decoding')).toBe('sync');
+    });
+  
+    it('should set decoding="async" for non-priority images when no user-defined decoding attribute exists', () => {
+      setupTestingModule();
+      const template = '<img ngSrc="path/img.png" width="150" height="50">';
+      const fixture = createTestComponent(template);
+      fixture.detectChanges();
+      const img = fixture.nativeElement.querySelector('img')!;
+      expect(img.getAttribute('decoding')).toBe('async');
+    });
+  
+    it('should respect user-defined decoding="auto" for priority images', () => {
+      setupTestingModule();
+      const template = '<img ngSrc="path/img.png" width="150" height="50" priority decoding="auto">';
+      const fixture = createTestComponent(template);
+      fixture.detectChanges();
+      const img = fixture.nativeElement.querySelector('img')!;
+      expect(img.getAttribute('decoding')).toBe('auto');
+    });
+  
+    it('should respect user-defined decoding="auto" for non-priority images', () => {
+      setupTestingModule();
+      const template = '<img ngSrc="path/img.png" width="150" height="50" decoding="auto">';
+      const fixture = createTestComponent(template);
+      fixture.detectChanges();
+      const img = fixture.nativeElement.querySelector('img')!;
+      expect(img.getAttribute('decoding')).toBe('auto');
+    });
+  
+    it('should respect user-defined decoding="sync" for non-priority images', () => {
+      setupTestingModule();
+      const template = '<img ngSrc="path/img.png" width="150" height="50" decoding="sync">';
+      const fixture = createTestComponent(template);
+      fixture.detectChanges();
+      const img = fixture.nativeElement.querySelector('img')!;
+      expect(img.getAttribute('decoding')).toBe('sync');
+    });
+  });
+
   describe('meta data', () => {
     it('should add a data attribute to the element for identification', () => {
       setupTestingModule();
